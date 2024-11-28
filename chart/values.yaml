@@ -1,0 +1,9 @@
+postgresql: []
+  #userPassword: "yourCustomPassword"   # Optional, will be used if provided
+  #superPassword: "yourSuperPassword"   # Optional, will be used if provided
+
+#fullnameOverride: "customname"         # Optional, override the full name if needed
+#nameOverride: "myapp"                  # Optional, override the name if needed
+
+serviceAccount: []
+#  name: "myapp-service-account"        # Optional, custom service account name

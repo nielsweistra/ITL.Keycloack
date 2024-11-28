@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  keycloak:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: keycloak
+    command: ["start-dev"]
+    ports:
+      - "8080:8080"  # Expose Keycloak on localhost:8080
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_PROXY: edge
+      KC_DB: postgres  # Specify PostgreSQL as the database
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak  # Set the PostgreSQL connection URL
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_password
+    depends_on:
+      - postgres  # Ensure Keycloak waits for PostgreSQL to be ready
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/realms/master"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  postgres:
+    image: postgres:13  # You can use any suitable PostgreSQL image
+    container_name: postgres
+    environment:
+      POSTGRES_USER: keycloak  # Set PostgreSQL user for Keycloak
+      POSTGRES_PASSWORD: keycloak_password  # Set PostgreSQL password
+      POSTGRES_DB: keycloak  # Set the database name
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    ports:
+      - "5432:5432"  # Expose PostgreSQL on localhost:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "keycloak"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  postgres_data:  # Create a volume for PostgreSQL data persistence
