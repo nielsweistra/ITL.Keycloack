@@ -41,8 +41,8 @@ This setup uses Docker Compose to run **Keycloak** and **PostgreSQL** as contain
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-repo/keycloak-postgres.git
-    cd keycloak-postgres
+    git clone https://github.com/nielsweistra/ITL.Keycloack.git
+    cd ITL.Keycloack
     ```
 
 2. Build and start the services:
